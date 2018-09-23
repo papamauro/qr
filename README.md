@@ -1,5 +1,5 @@
 # Bookcrossing QRCode labels generator
-Unofficial QRCode-powered labels generator for bookcrossing.com. Application is available at <a href="papamauro.github.io/qr">papamauro.github.io/qr</a>
+Unofficial QRCode-powered labels generator for bookcrossing.com. Application is available at <a href="https://papamauro.github.io/qr/">papamauro.github.io/qr</a>
 
 # Credits
 This webapp uses the following tools and libraries:
