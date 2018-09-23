@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>LabG</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu:400,700" rel="stylesheet">
+    <script type="text/javascript" src="js/html2canvas.min.js"></script>
+    <script type="text/javascript" src="js/kjua.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <style>
+    
+    body{
+        height:100vh;
+    }
+
+    .container .row:first-child{
+        overflow-y:auto;
+    }
+
+    #labelborder{
+        font-family: 'Ubuntu', sans-serif;
+        border:2px solid black;
+        border-radius:15px;
+    }
+
+    #temp{
+        max-width:250px;
+    }
+
+    #bcrow td{
+        border:2px solid black;
+    }
+    
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    #logo {
+        margin-top: -185px;
+        margin-left: 70px;
+    }
+
+
+    @media (min-width: 992px) {
+        .navbar{
+            height:25% !important;
+        }
+    }
+
+    </style>
+</head>
+
+<body class="text-left">
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand text-primary"><i class="logo fas fa-qrcode fa-3x"></i></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item text-primary mr-3">
+                        <a class="nav-link" href="#">About this Webapp</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="http://www.bookcrossing.com" class="btn btn-outline-primary">BookCrossing.com</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row align-items-center h-75">
+            <div class="col-12 col-lg-8 mb-5">
+                <div class="banner-content">
+                    <h1><span class="font-italic">Unofficial</span> bookcrossing<br />label generator</h1>
+                    <p>
+                        Enter BCID to create your QRCode-powered label.<br class="d-none d-lg-inline" />
+                        If you don't have a BCID please register your book at<br class="d-none d-lg-inline" />
+                        bookcrossing.com
+                    </p>
+                    <form>
+
+                        <div class="form-group row">
+                            <label for="bcid" class="col-sm-12 col-lg-2 col-form-label">BCID</label>
+                            <div class="col-sm-12 col-lg-6">
+                                <input type="text" maxlength="13" value="123-123456798" class="form-control" id="bcid" aria-describedby="bcid" placeholder="Enter BCID...">
+
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="language" class="col-sm-12 col-lg-2 col-form-label">Language</label>
+                            <div class="col-sm-12 col-lg-6">
+                                <select class="form-control" id="language">
+                                    <option value="en">English</option>
+                                    <option value="it">Italiano</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                    <button onclick="apply()" class="btn btn-primary">Apply</button><a onclick="getImage()" class="btn text-primary"><i class="fas fa-arrow-alt-circle-down fa-2x"></i></a>
+
+                </div>
+
+            </div>
+            <div class="col-12 col-lg-4 d-flex justify-content-center">
+                <div id="label" class="p-3 d-inline-block">
+                    <div class="p-3" id="labelborder">
+                        <table id="temp">
+                            <tr>
+                                <td colspan="3">
+                                    <h1 id="title" class="font-weight-bold"></h1>
+                                    <p id="parone" class="text-justify"></p>
+                                    <p class="text-center h5 font-weight-bold">www.BookCrossing.com</p>
+                                    <p id="partwo" class="text-justify"></p>
+                                </td>
+                            </tr>
+                            <tr class="text-center" id="bcrow">
+                                <td colspan="1" class="py-2 text-white bg-dark">BCID</td>
+                                <td colspan="2" id="label_bcid" class="font-weight-bold"></td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="3" class="position-relative">
+                                    <div id="qr"></div>
+                                    <image id="logo" class="position-absolute" src="img/logo.png" />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var lang = {
+            "en": {
+                "title": "Howdy! Hi!",
+                "parone": "I'm a very special book. You see, I'm traveling around the world! Scan the QR Code below or go to",
+                "partwo": "You'll discover where I've been and who has read me, and can let them know I'm in your hands. Then...READ and RELEASE me!"
+            },
+            "it": {
+                "title": "Hola! Ciao!",
+                "parone": "Sono un libro veramente speciale. Come vedi sto girando il mondo! Scannerizza il codice QR Code qui sotto o vai su",
+                "partwo": "Scoprirai dove sono stato e chi mi ha letto, puoi fargli sapere che sono nelle tue mani. Poi...LEGGIMI e LIBERAMI!"
+            }
+        };
+
+
+        $(function() {
+
+            $('#bcid').keyup(function() {
+                $(this).val($(this).val().replace(/(\d{3})\-?(\d*)/, '$1-$2'))
+            });
+            apply();
+        });
+
+        function getImage() {
+            html2canvas(document.querySelector("#label"), {
+                useCORS: true,
+                allowTaint: false,
+                scale: 3
+            }).then(canvas => {
+                saveAs(canvas.toDataURL(), 'label.png');
+            });
+        };
+
+        function saveAs(uri, filename) {
+
+            var link = document.createElement('a');
+
+            if (typeof link.download === 'string') {
+
+                link.href = uri;
+                link.download = filename;
+
+                //Firefox requires the link to be in the body
+                document.body.appendChild(link);
+
+                //simulate click
+                link.click();
+
+                //remove the link when done
+                document.body.removeChild(link);
+
+            } else {
+
+                window.open(uri);
+
+            }
+        };
+
+        function apply() {
+            console.log("here we are");
+            applyText();
+            applyBCID();
+            generateQR();
+        };
+
+        function applyText() {
+            $('#title').text(lang[$('select').val()].title);
+            $('#parone').text(lang[$('select').val()].parone);
+            $('#partwo').text(lang[$('select').val()].partwo);
+        };
+
+        function applyBCID() {
+            $('#label_bcid').text($('#bcid').val());
+        };
+
+        function generateQR() {
+            var url = "www.bookcrossing.com/journal/add/"
+            var el = kjua({
+                text: url + $('#bcid').val(),
+                render: 'canvas',
+                rounded: 80,
+                size: 1000,
+                ecLevel: 'H'
+            });
+            $('#qr').empty().append(el);
+            $('#qr canvas').addClass('mt-4');
+			$('#qr canvas').addClass('w-100 h-100');
+        };
+    </script>
+</body>
+
+</html>
